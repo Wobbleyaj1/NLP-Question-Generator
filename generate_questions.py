@@ -15,19 +15,35 @@ Paris, the capital city of France, is renowned for its rich history, stunning ar
 """
 num_questions = 3
 
-def generate_questions_and_answers(paragraph: str, num_questions: int = 3):
+def generate_questions_and_answers_with_distractors(paragraph: str, num_questions: int = 3):
     system_prompt = (
+        "You are a helpful assistant that reads educational text and generates a quiz.\n"
         "You are a helpful assistant that reads educational text and generates a quiz.\n"
         "Given a paragraph, generate exactly the specified number of fact-based questions.\n"
         "Each question must be answerable using only the information in the paragraph.\n"
-        "Then, provide an accurate answer to each question directly beneath it.\n"
+        "For each question, provide:\n"
+        "- The correct answer.\n"
+        "- Three plausible but incorrect distractor answers.\n"
         "Avoid speculative or inferential questions.\n"
     )
 
     user_prompt = (
         f"Paragraph:\n\"\"\"\n{paragraph}\n\"\"\"\n\n"
-        f"Generate {num_questions} questions and answers from the above paragraph.\n"
-        "Format:\nQ1: ...\nA1: ...\nQ2: ...\nA2: ... etc."
+        f"Generate {num_questions} questions, each with one correct answer and three distractors.\n"
+        "Format:\n"
+        "Q1: ...\n"
+        "Correct Answer: ...\n"
+        "Distractors:\n"
+        "- ...\n"
+        "- ...\n"
+        "- ...\n\n"
+        "Q2: ...\n"
+        "Correct Answer: ...\n"
+        "Distractors:\n"
+        "- ...\n"
+        "- ...\n"
+        "- ...\n\n"
+        "etc."
     )
 
     response = openai.chat.completions.create(
@@ -41,10 +57,9 @@ def generate_questions_and_answers(paragraph: str, num_questions: int = 3):
 
     return response.choices[0].message.content.strip()
 
-output = generate_questions_and_answers(paragraph, num_questions)
+# Then call and print it like before:
+output = generate_questions_and_answers_with_distractors(paragraph, num_questions)
 
-# Print result
-print("\nParagraph:")
-print(paragraph.strip())
-print("\nQuestions and Answers:")
+print("\nQuestions and Answers with Distractors:\n")
 print(output)
+
