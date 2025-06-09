@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, TextField, Button, CircularProgress } from "@mui/material";
+import ModeSelector from "./ModeSelector";
 
 export default function QuizInputForm({
   paragraph,
@@ -8,6 +9,8 @@ export default function QuizInputForm({
   setNumQuestions,
   loading,
   handleGenerate,
+  mode,
+  setMode,
 }) {
   return (
     <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
@@ -17,9 +20,11 @@ export default function QuizInputForm({
         rows={5}
         value={paragraph}
         onChange={(e) => setParagraph(e.target.value)}
-        sx={{ width: 400, mb: 2 }}
+        sx={{ width: 600, mb: 2 }}
       />
       <Box display="flex" alignItems="center" gap={2}>
+        <ModeSelector mode={mode} setMode={setMode} />
+
         <TextField
           label="# of Questions"
           type="number"

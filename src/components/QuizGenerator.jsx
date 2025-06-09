@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { downloadQuizAsCSV, downloadResultsAsCSV } from "../utils/csvUtils";
 import { fetchWithRetry } from "../utils/fetchWithRetry";
 
-import ModeSelector from "./ModeSelector";
 import QuizInputForm from "./QuizInputForm";
 import QuizQuestionDialog from "./QuizQuestionDialog";
 import QuizResultsDialog from "./QuizResultsDialog";
@@ -99,7 +98,6 @@ export default function QuizGenerator() {
       <h1 style={{ textAlign: "center", marginBottom: 24 }}>
         NLP Question Generator
       </h1>
-      <ModeSelector mode={mode} setMode={setMode} />
       <QuizInputForm
         paragraph={paragraph}
         setParagraph={setParagraph}
@@ -107,6 +105,8 @@ export default function QuizGenerator() {
         setNumQuestions={setNumQuestions}
         loading={loading}
         handleGenerate={handleGenerate}
+        mode={mode}
+        setMode={setMode}
       />
 
       <QuizQuestionDialog
