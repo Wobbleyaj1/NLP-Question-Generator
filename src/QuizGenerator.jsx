@@ -9,7 +9,7 @@ export default function QuizGenerator() {
   const [submitted, setSubmitted] = useState(false);
 
   async function handleGenerate() {
-    const res = await fetch("http://localhost:8000/generate_quiz", {
+    const res = await fetch("https://nlp-question-generator.onrender.com/generate_quiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ paragraph, num_questions: numQuestions }),
