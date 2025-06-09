@@ -1,5 +1,5 @@
 import './App.css';
-import QuizGenerator from './QuizGenerator'; // <-- Import your component
+import QuizGenerator from './components/QuizGenerator';
 
 function App() {
   return (
