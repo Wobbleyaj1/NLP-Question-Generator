@@ -14,7 +14,7 @@ describe("QuizInputForm", () => {
       />
     );
     expect(screen.getByLabelText(/enter paragraph/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/number of questions/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/# of questions/i)).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /generate quiz/i })
     ).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("QuizInputForm", () => {
     });
     expect(setParagraph).toHaveBeenCalledWith("Test paragraph");
 
-    fireEvent.change(screen.getByLabelText(/number of questions/i), {
+    fireEvent.change(screen.getByLabelText(/# of questions/i), {
       target: { value: "5" },
     });
     expect(setNumQuestions).toHaveBeenCalledWith(5);

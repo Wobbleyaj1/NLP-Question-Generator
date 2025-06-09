@@ -1,6 +1,10 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import QuizGenerator from "../QuizGenerator";
 
+beforeAll(() => {
+  window.alert = jest.fn();
+});
+
 describe("QuizGenerator integration", () => {
   beforeEach(() => {
     global.fetch = jest.fn(() =>
@@ -29,7 +33,7 @@ describe("QuizGenerator integration", () => {
     fireEvent.change(screen.getByLabelText(/enter paragraph/i), {
       target: { value: "math" },
     });
-    fireEvent.change(screen.getByLabelText(/number of questions/i), {
+    fireEvent.change(screen.getByLabelText(/# of questions/i), {
       target: { value: 1 },
     });
     fireEvent.click(screen.getByRole("button", { name: /generate quiz/i }));
@@ -56,4 +60,19 @@ describe("QuizGenerator integration", () => {
     expect(screen.getAllByText("4").length).toBeGreaterThan(0);
     expect(screen.getByText(/Correct answer:/i)).toBeInTheDocument();
   });
+});
+
+test("switching mode bypasses no change dialog", async () => {
+  render(<QuizGenerator />);
+  fireEvent.change(screen.getByLabelText(/enter paragraph/i), {
+    target: { value: "test" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: /generate quiz/i }));
+  // Now switch mode
+  fireEvent.click(screen.getByRole("button", { name: /download quiz/i }));
+  await waitFor(() =>
+    expect(screen.getByRole("button", { name: /generate quiz/i })).toBeEnabled()
+  );
+  fireEvent.click(screen.getByRole("button", { name: /generate quiz/i }));
+  expect(screen.queryByText(/no changes detected/i)).not.toBeInTheDocument();
 });

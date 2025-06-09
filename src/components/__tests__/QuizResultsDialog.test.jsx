@@ -63,3 +63,18 @@ describe("QuizResultsDialog", () => {
     expect(handleClose).toHaveBeenCalled();
   });
 });
+
+test("calls handleExport when Export Results button is clicked", () => {
+  const handleExport = jest.fn();
+  render(
+    <QuizResultsDialog
+      open={true}
+      quiz={quiz}
+      answers={{ 0: "4", 1: "Paris" }}
+      handleClose={() => {}}
+      handleExport={handleExport}
+    />
+  );
+  fireEvent.click(screen.getByRole("button", { name: /export results/i }));
+  expect(handleExport).toHaveBeenCalled();
+});

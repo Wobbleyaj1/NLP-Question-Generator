@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { downloadQuizAsCSV, downloadResultsAsCSV } from "../utils/csvUtils";
+
+import ModeSelector from "./ModeSelector";
+import NoChangeDialog from "./NoChangeDialog";
 import QuizInputForm from "./QuizInputForm";
 import QuizQuestionDialog from "./QuizQuestionDialog";
 import QuizResultsDialog from "./QuizResultsDialog";
-import NoChangeDialog from "./NoChangeDialog";
 
 export default function QuizGenerator() {
   const [paragraph, setParagraph] = useState("");
@@ -17,12 +20,18 @@ export default function QuizGenerator() {
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [openResultsDialog, setOpenResultsDialog] = useState(false);
+  const [mode, setMode] = useState("take"); // "take" or "download"
+  const [lastMode, setLastMode] = useState("take");
 
   const handlePrev = () => setCurrentQuestion((i) => i - 1);
   const handleNext = () => setCurrentQuestion((i) => i + 1);
 
   async function handleGenerate() {
-    if (paragraph === lastParagraph && numQuestions === lastNumQuestions) {
+    if (
+      paragraph === lastParagraph &&
+      numQuestions === lastNumQuestions &&
+      mode === lastMode
+    ) {
       setOpenNoChange(true);
       return;
     }
@@ -51,8 +60,14 @@ export default function QuizGenerator() {
         setSubmitted(false);
         setLastParagraph(paragraph);
         setLastNumQuestions(numQuestions);
+        setLastMode(mode);
         setCurrentQuestion(0);
-        setOpenQuizDialog(true);
+
+        if (mode === "download") {
+          downloadQuizAsCSV(shuffledQuiz);
+        } else {
+          setOpenQuizDialog(true);
+        }
       } else {
         alert("Failed to generate quiz.");
       }
@@ -73,6 +88,10 @@ export default function QuizGenerator() {
     setOpenResultsDialog(true);
   }
 
+  function handleExportResults() {
+    downloadResultsAsCSV(quiz, answers);
+  }
+
   useEffect(() => {
     document.title = "NLP Question Generator";
   }, []);
@@ -82,6 +101,7 @@ export default function QuizGenerator() {
       <h1 style={{ textAlign: "center", marginBottom: 24 }}>
         NLP Question Generator
       </h1>
+      <ModeSelector mode={mode} setMode={setMode} />
       <QuizInputForm
         paragraph={paragraph}
         setParagraph={setParagraph}
@@ -109,6 +129,7 @@ export default function QuizGenerator() {
         quiz={quiz}
         answers={answers}
         handleClose={() => setOpenResultsDialog(false)}
+        handleExport={handleExportResults}
       />
 
       <NoChangeDialog

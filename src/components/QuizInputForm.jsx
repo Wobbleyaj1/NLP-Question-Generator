@@ -21,7 +21,7 @@ export default function QuizInputForm({
       />
       <Box display="flex" alignItems="center" gap={2}>
         <TextField
-          label="Number of Questions"
+          label="# of Questions"
           type="number"
           inputProps={{ min: 1, max: 10 }}
           value={numQuestions}

@@ -14,7 +14,29 @@ export default function QuizResultsDialog({
   quiz,
   answers,
   handleClose,
+  handleExport,
 }) {
+  function downloadResultsAsCSV(quiz, answers) {
+    const header = "Question,Your Answer,Correct Answer\n";
+    const rows = quiz.map((q, i) =>
+      [
+        `"${q.question.replace(/"/g, '""')}"`,
+        `"${answers[i] || ""}"`,
+        `"${q.correct.replace(/"/g, '""')}"`,
+      ].join(",")
+    );
+    const csvContent = header + rows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "quiz_results.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <Dialog open={open} maxWidth="md" fullWidth onClose={handleClose}>
       <DialogTitle>Quiz Results</DialogTitle>
@@ -49,6 +71,7 @@ export default function QuizResultsDialog({
         ))}
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleExport}>Export Results</Button>
         <Button variant="contained" onClick={handleClose}>
           Close
         </Button>
