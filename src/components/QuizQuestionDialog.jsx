@@ -11,7 +11,9 @@ import {
   FormControlLabel,
   Radio,
   Button,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function QuizQuestionDialog({
   open,
@@ -28,8 +30,26 @@ export default function QuizQuestionDialog({
   if (!quiz.length) return null;
   return (
     <Dialog open={open} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        Question {currentQuestion + 1} of {quiz.length}
+      <DialogTitle
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          pr: 1, // add some right padding for the icon
+        }}
+      >
+        <span>
+          Question {currentQuestion + 1} of {quiz.length}
+        </span>
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          edge="end"
+          size="small"
+          sx={{ ml: 2 }}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         <Box>
