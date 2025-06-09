@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/NLP-Question-Generator/static/css/main.f855e6bc.css",
-    "main.js": "/NLP-Question-Generator/static/js/main.95c61ec0.js",
+    "main.js": "/NLP-Question-Generator/static/js/main.b9bf65b6.js",
     "index.html": "/NLP-Question-Generator/index.html",
     "main.f855e6bc.css.map": "/NLP-Question-Generator/static/css/main.f855e6bc.css.map",
-    "main.95c61ec0.js.map": "/NLP-Question-Generator/static/js/main.95c61ec0.js.map"
+    "main.b9bf65b6.js.map": "/NLP-Question-Generator/static/js/main.b9bf65b6.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.95c61ec0.js"
+    "static/js/main.b9bf65b6.js"
   ]
 }
