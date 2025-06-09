@@ -13,7 +13,7 @@
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
-  "homepage": "https://wobbleyaj1.github.io/",
+  "homepage": "https://wobbleyaj1.github.io/NLP-Question-Generator",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
