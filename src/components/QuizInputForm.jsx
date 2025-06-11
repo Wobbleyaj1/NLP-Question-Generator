@@ -1,9 +1,6 @@
 import React, { useRef } from "react";
 import { Box, TextField, Button, CircularProgress } from "@mui/material";
 import ModeSelector from "./ModeSelector";
-import * as pdfjsLib from "pdfjs-dist";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `${process.env.PUBLIC_URL}/pdf.worker.min.js`;
 
 export default function QuizInputForm({
   paragraph,
@@ -17,41 +14,29 @@ export default function QuizInputForm({
 }) {
   const fileInputRef = useRef();
 
-  const extractPdfText = async (arrayBuffer) => {
-    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-    let text = "";
-    for (let i = 1; i <= pdf.numPages; i++) {
-      const page = await pdf.getPage(i);
-      const content = await page.getTextContent();
-      text += content.items.map((item) => item.str).join(" ") + "\n";
-    }
-    return text;
+  const extractTextFile = async (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (event) => resolve(event.target.result);
+      reader.onerror = reject;
+      reader.readAsText(file);
+    });
   };
 
   const handleDrop = async (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && file.type === "application/pdf") {
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        const arrayBuffer = event.target.result;
-        const text = await extractPdfText(arrayBuffer);
-        setParagraph(text);
-      };
-      reader.readAsArrayBuffer(file);
+    if (file && file.type.startsWith("text/")) {
+      const text = await extractTextFile(file);
+      setParagraph(text);
     }
   };
 
-  const handleFileSelect = (e) => {
+  const handleFileSelect = async (e) => {
     const file = e.target.files[0];
-    if (file && file.type === "application/pdf") {
-      const reader = new FileReader();
-      reader.onload = async (event) => {
-        const arrayBuffer = event.target.result;
-        const text = await extractPdfText(arrayBuffer);
-        setParagraph(text);
-      };
-      reader.readAsArrayBuffer(file);
+    if (file && file.type.startsWith("text/")) {
+      const text = await extractTextFile(file);
+      setParagraph(text);
     }
   };
 
@@ -86,7 +71,7 @@ export default function QuizInputForm({
         <input
           ref={fileInputRef}
           type="file"
-          accept="application/pdf"
+          accept="text/"
           style={{ display: "none" }}
           onChange={handleFileSelect}
         />
